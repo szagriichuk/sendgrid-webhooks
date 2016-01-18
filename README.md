@@ -3,24 +3,22 @@ Simple Java implementation for https://sendgrid.com/docs/API_Reference/Webhooks/
 #How to use:
 
 
-    1) Create instance :
+1) Create instance :
     
     ```
     private SendGridApi sendGridApi = new SendGridApi();
     
     ```
     
-    The ```SendGridApi``` is stateless so, you can create one instance and use it where you want.
+The ```SendGridApi``` is stateless so, you can create one instance and use it where you want.
     
-    2) To read all messages :
-    
+2) To read all messages :
     
     ```
     WebHookEvents events = sendGridApi.readAll(data);
     
     ```
-    
-    Where ```WebHookEvents``` is:
+Where ```WebHookEvents``` is:
     
     ```
     public class WebHookEvents {
@@ -45,10 +43,9 @@ Simple Java implementation for https://sendgrid.com/docs/API_Reference/Webhooks/
 
     ```
     
-    and ```WebHookEvent``` is:
+and ```WebHookEvent``` is:
     
     ```
-
     public class WebHookEvent {
 
         @JsonProperty("email")
@@ -102,22 +99,18 @@ Simple Java implementation for https://sendgrid.com/docs/API_Reference/Webhooks/
     }
 
     ```
-    
-    3) To read first message from list
-    
-     
+3) To read first message from list
     ```
     WebHookEvent event = sendGridApi.readFirst(data);
     
     ```
     
     
-    4) To filter messages by some message from list
-       
+4) To filter messages by some eventType
          
     ```
     WebHookEvents events = sendGridApi.filterBy(sendGridApi.readAll(data), EventType.UNSUBSCRIBE);
         
     ```
-    Returns list of unsubscribed events.
+Returns list of unsubscribed events.
     
