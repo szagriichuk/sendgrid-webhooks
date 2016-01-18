@@ -1,15 +1,14 @@
 package com.sendgrid.events;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ser.std.StringSerializer;
 import com.sendgrid.events.model.EventType;
 import com.sendgrid.events.model.WebHookEvent;
 import com.sendgrid.events.model.WebHookEvents;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.sendgrid.events.Preconditions.checkNotNull;
 
@@ -23,20 +22,28 @@ public class SendGridApi {
 
     private static final ObjectMapper mapper = new ObjectMapper();
 
-    private Optional<String> of(String data) {
-        return Optional.of(data);
-    }
-
     public WebHookEvents readAll(String data) {
-        return of(checkNotNull(data)).map(a -> parse(data)).filter(a->a!=null).get();
+        return parse(checkNotNull(data));
     }
 
     public WebHookEvent readFirst(String data) {
-        return of(checkNotNull(data)).map(a -> parse(data)).filter(a->a!=null).map(a -> a.getEvents().stream().findFirst().get()).get();
+        WebHookEvent event = null;
+        WebHookEvents events = parse(checkNotNull(data));
+        if (events != null) {
+            event = events.getEvents().get(0);
+        }
+        return event;
     }
 
     public WebHookEvents filterBy(WebHookEvents data, EventType type) {
-        return new WebHookEvents(checkNotNull(data).getEvents().stream().filter(e -> type.event.toLowerCase().equals(e.getEvent().toLowerCase())).collect(Collectors.toList()));
+        checkNotNull(data);
+        List<WebHookEvent> events = new ArrayList<>();
+        for (WebHookEvent event : data.getEvents()) {
+            if (type.event.toLowerCase().equals(event.getEvent().toLowerCase())) {
+                events.add(event);
+            }
+        }
+        return new WebHookEvents(events);
     }
 
     private WebHookEvents parse(String data) {
