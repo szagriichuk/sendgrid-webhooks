@@ -1,0 +1,31 @@
+## generic files to ignore
+*~
+*.DS_Store
+*.swp
+*.out
+*.log
+
+# java specific
+*.class
+
+# compilation folder
+target/
+
+# IDE specific
+.classpath
+.project
+.settings
+*.iws
+.idea/
+*.iml
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+.gradle
+build/
+
+# Ignore Gradle GUI config
+gradle-app.setting
