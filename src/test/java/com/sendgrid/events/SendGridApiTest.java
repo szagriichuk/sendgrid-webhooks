@@ -9,6 +9,10 @@ import com.sendgrid.events.model.WebHookEvent;
 import com.sendgrid.events.model.WebHookEvents;
 import org.junit.Test;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import static com.sendgrid.events.model.EventType.*;
 import static org.junit.Assert.*;
 
 /**
@@ -110,19 +114,43 @@ public class SendGridApiTest {
 
     @Test
     public void testFilterSPAMREPORT() throws Exception {
-        filterTest(EventType.SPAMREPORT);
+        filterTest(SPAMREPORT);
     }
 
     @Test
     public void testFilterUnsubscribe() throws Exception {
-        filterTest(EventType.UNSUBSCRIBE);
+        filterTest(UNSUBSCRIBE);
     }
 
-    private void filterTest(EventType eventType) throws Exception {
-        WebHookEvents webHookEvents = sendGridApi.filterBy(readAll(new FileTestContentProvider()), eventType);
+    @Test
+    public void testFilterUnsubscribeSPAMREPORT() throws Exception {
+        filterTest(UNSUBSCRIBE, SPAMREPORT);
+    }
+
+    @Test
+    public void testFilterUnsubscribeSPAMREPORTOPEN() throws Exception {
+        filterTest(UNSUBSCRIBE, SPAMREPORT, OPEN);
+    }
+    @Test
+    public void testFilterUnsubscribeSPAMREPORTOPENDEFERRED() throws Exception {
+        filterTest(UNSUBSCRIBE, SPAMREPORT, OPEN, DEFERRED);
+    }
+
+    private void filterTest(EventType... eventTypes) throws Exception {
+        WebHookEvents webHookEvents = sendGridApi.filterBy(readAll(new FileTestContentProvider()), eventTypes);
         assertNotNull(webHookEvents);
+        Set<String> dict = createDictionary(eventTypes);
         for (WebHookEvent webHookEvent : webHookEvents.getEvents()) {
-            assertTrue(eventType.event.toLowerCase().equals(webHookEvent.getEvent().toLowerCase()));
+            assertTrue(dict.contains(webHookEvent.getEvent().toLowerCase()));
         }
     }
+
+    private Set<String> createDictionary(EventType[] types) {
+        Set<String> dictionary = new HashSet<>();
+        for (EventType type : types) {
+            dictionary.add(type.event.toLowerCase());
+        }
+        return dictionary;
+    }
+
 }

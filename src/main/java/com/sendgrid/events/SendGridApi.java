@@ -8,7 +8,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static com.sendgrid.events.Preconditions.checkNotNull;
 
@@ -35,15 +37,24 @@ public class SendGridApi {
         return event;
     }
 
-    public WebHookEvents filterBy(WebHookEvents data, EventType type) {
+    public WebHookEvents filterBy(WebHookEvents data, EventType... types) {
         checkNotNull(data);
         List<WebHookEvent> events = new ArrayList<>();
+        Set<String> typesDict = createDictionary(types);
         for (WebHookEvent event : data.getEvents()) {
-            if (type.event.toLowerCase().equals(event.getEvent().toLowerCase())) {
+            if (typesDict.contains(event.getEvent().toLowerCase())) {
                 events.add(event);
             }
         }
         return new WebHookEvents(events);
+    }
+
+    private Set<String> createDictionary(EventType[] types) {
+        Set<String> dictionary = new HashSet<>();
+        for (EventType type : types) {
+          dictionary.add(type.event.toLowerCase());
+        }
+        return dictionary;
     }
 
     private WebHookEvents parse(String data) {
