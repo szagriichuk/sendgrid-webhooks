@@ -1,5 +1,3 @@
-Simple Java implementation for https://sendgrid.com/docs/API_Reference/Webhooks/event.html;
-
 #How to use:
 
 
