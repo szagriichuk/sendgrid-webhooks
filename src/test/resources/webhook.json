@@ -117,5 +117,15 @@
     "ip":"255.255.255.255",
     "url":"http://www.sendgrid.com/",
     "asm_group_id":10
+  },
+  {
+    "email": "han@han.com",
+    "timestamp": 123123123,
+    "sg_message_id": "--sad;f;alfma.filter0691p1mdw1.aasdf.asd.0",
+    "category": [
+      "SendGrid Threads"
+    ],
+    "event": "unsubscribe",
+    "threads-preview": true
   }
 ]

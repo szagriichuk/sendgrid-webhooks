@@ -1,5 +1,6 @@
 package com.sendgrid.events;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ser.std.StringSerializer;
 import com.sendgrid.events.model.EventType;
@@ -22,6 +23,11 @@ public class SendGridApi {
     private static final Logger LOG = LoggerFactory.getLogger(SendGridApi.class);
 
     private static final ObjectMapper mapper = new ObjectMapper();
+
+    static {
+        mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    }
 
     private Optional<String> of(String data) {
         return Optional.of(data);
