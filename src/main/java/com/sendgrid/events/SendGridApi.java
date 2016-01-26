@@ -1,5 +1,6 @@
 package com.sendgrid.events;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sendgrid.events.model.EventType;
 import com.sendgrid.events.model.WebHookEvent;
@@ -23,6 +24,11 @@ public class SendGridApi {
     private static final Logger LOG = LoggerFactory.getLogger(SendGridApi.class);
 
     private static final ObjectMapper mapper = new ObjectMapper();
+
+    static {
+        mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    }
 
     public WebHookEvents readAll(String data) {
         return parse(checkNotNull(data));

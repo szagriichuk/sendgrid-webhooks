@@ -3,7 +3,9 @@ package com.sendgrid.events.model;
 
 import com.fasterxml.jackson.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -35,7 +37,7 @@ public class WebHookEvent {
     @JsonProperty("event")
     private String event;
     @JsonProperty("category")
-    private String category;
+    private List<String> category = new ArrayList<String>();
     @JsonProperty("sg_event_id")
     private String sg_event_id;
     @JsonProperty("sg_message_id")
@@ -100,12 +102,12 @@ public class WebHookEvent {
     }
 
     @JsonProperty("category")
-    public String getCategory() {
+    public List<String> getCategory() {
         return category;
     }
 
     @JsonProperty("category")
-    public void setCategory(String category) {
+    public void setCategory(List<String> category) {
         this.category = category;
     }
 
