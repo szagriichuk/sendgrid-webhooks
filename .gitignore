@@ -20,7 +20,7 @@ target/
 *.iml
 
 # Package Files #
-*.jar
+#*.jar
 *.war
 *.ear
 
